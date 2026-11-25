@@ -1,26 +1,332 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* paper */
+  --color-ivory: #fdfbf7;
+  --color-paper: #f8f2ea;
+  --color-blush: #f6e8e8;
+  /* gold */
+  --color-gold: #c39a45;
+  --color-gold-deep: #6f5214;
+  --color-gold-light: #e6cd8a;
+  /* burgundy & English pastels */
+  --color-burgundy: #6e1a33;
+  --color-burgundy-deep: #4a0f22;
+  --color-rose: #d9a5b3;
+  --color-sage: #a3b59f;
+  --color-sage-light: #c9d5c4;
+  --color-sage-deep: #4f6a4a;
+  --color-powder: #dfe7f0;
+  /* text */
+  --color-ink: #2a2124;
+  --color-muted: #5f5258;
+
+  --font-script: var(--font-script-face);
+  --font-serif: var(--font-cormorant);
+  --font-caps: var(--font-cinzel);
+  --font-arabic: var(--font-amiri);
+  --font-quran: var(--font-amiri-quran);
+  --font-ruqaa: var(--font-calligraphic);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Pinyon is a fine hairline script: thicken it slightly so it reads clearly */
+.font-script {
+  -webkit-text-stroke: 0.5px currentColor;
+  paint-order: stroke fill;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-ivory);
+  color: var(--color-ink);
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-weight: 500;
+}
+
+::selection {
+  background: var(--color-rose);
+  color: var(--color-burgundy-deep);
+}
+
+/* ---------- Gold foil (script headings only) ---------- */
+.gold-foil,
+.gold-foil-light {
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: foil 9s ease-in-out infinite alternate;
+}
+.gold-foil {
+  background-image: linear-gradient(110deg, #8a6a22 0%, #c29a45 25%, #9c7a2c 45%, #d4b469 55%, #8a6a22 75%, #b38d3b 100%);
+}
+.gold-foil-light {
+  background-image: linear-gradient(110deg, #c9a24b 0%, #f3e2a9 30%, #d9bb6e 50%, #fbefc9 65%, #c9a24b 100%);
+}
+@keyframes foil {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+
+/* ---------- Surfaces: khatam (8-point star-and-cross) geometry ---------- */
+.pattern-field {
+  background-color: var(--color-paper);
+  background-image: url("/geo.svg");
+  background-size: 96px 96px;
+}
+
+/* Sage ground with a faint white-line star lattice */
+.sage-field {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--color-sage);
+}
+.sage-field::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/geo-light.svg");
+  background-size: 128px 128px;
+  background-position: center top;
+  opacity: 0.32;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* One thin row of stars between gold rules, with cusped edges */
+.pattern-strip {
+  position: relative;
+  height: 30px;
+  background-color: var(--color-paper);
+  background-image: url("/geo.svg");
+  background-size: 30px 30px;
+  background-position: center -15px;
+  border-block: 2px solid var(--color-gold);
+  /* a second gold rule just outside, like a framed band */
+  box-shadow:
+    0 -4px 0 var(--color-ivory),
+    0 -5.5px 0 var(--color-gold),
+    0 4px 0 var(--color-ivory),
+    0 5.5px 0 var(--color-gold);
+  z-index: 1;
+}
+.pattern-strip::before,
+.pattern-strip::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 7px;
+  background: url("/arch-h.svg") repeat-x center / 18px 7px;
+  pointer-events: none;
+}
+.pattern-strip::before { top: 0; transform: scaleY(-1); }
+.pattern-strip::after { bottom: 0; }
+@media (min-width: 768px) {
+  .pattern-strip { height: 38px; background-size: 38px 38px; background-position: center -19px; }
+  .pattern-strip::before,
+  .pattern-strip::after { height: 9px; background-size: 23px 9px; }
+}
+
+.pattern-wash {
+  display: none;
+}
+
+/* Ivory box with cusped arch edges, sitting on a pattern field */
+.arch-box {
+  position: relative;
+  background: var(--color-ivory);
+  outline: 1px solid var(--color-gold);
+  outline-offset: -10px;
+}
+.arch-box::before,
+.arch-box::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: url("/arch-h.svg") repeat-x center / 30px 12px;
+  pointer-events: none;
+}
+.arch-box::before { top: -11px; }
+.arch-box::after { bottom: -11px; transform: scaleY(-1); }
+
+/* Mihrab panel: SVG arch cap on top, this body below. One continuous frame:
+   the pattern is a single background, so sides and base join with no seam.
+   Band width is 28/700 of the panel width (4cqw) to match the SVG cap, and
+   the tile phase is offset so the pattern runs on unbroken from the cap. */
+.mihrab-body {
+  padding: 0 calc(4cqw - 2px) calc(4cqw - 2px);
+  background-color: var(--color-paper);
+  background-image: url("/geo.svg");
+  background-size: 4cqw 4cqw;
+  background-position: -2cqw -2.571cqw;
+  border-inline: 2px solid var(--color-gold);
+  border-bottom: 2px solid var(--color-gold);
+}
+.mihrab-inner {
+  position: relative;
+  margin-inline: -0.75px;
+  background: var(--color-ivory);
+  border-inline: 1.5px solid var(--color-gold);
+  border-bottom: 1.5px solid var(--color-gold);
+}
+/* fine second rule, matching the one drawn inside the arch cap */
+.mihrab-inner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 1.29cqw;
+  left: 1.29cqw;
+  right: 1.29cqw;
+  border-inline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  pointer-events: none;
+}
+
+/* Rounded-arch portrait frame */
+.arch-portrait {
+  position: relative;
+  border-radius: 999px 999px 0 0;
+  padding: 7px;
+  background: var(--color-ivory);
+  border: 1.5px solid var(--color-gold);
+}
+.arch-portrait > .inner {
+  border-radius: 999px 999px 0 0;
+  overflow: hidden;
+  outline: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  outline-offset: 3px;
+}
+
+@layer components {
+  .card {
+    background: var(--color-ivory);
+    border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
+    box-shadow: 0 24px 50px -32px rgba(74, 15, 34, 0.35);
+  }
+}
+
+/* Deep burgundy band */
+.burgundy-band {
+  position: relative;
+  background-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+.burgundy-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/geo-gold.svg");
+  background-size: 128px 128px;
+  background-position: center;
+  opacity: 0.16;
+  pointer-events: none;
+}
+.burgundy-band > * {
+  position: relative;
+}
+
+/* ---------- Typography helpers ---------- */
+.caps {
+  font-family: var(--font-cinzel), serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* In the components layer so Tailwind size/colour utilities can override it */
+@layer components {
+  .eyebrow {
+    font-family: var(--font-cinzel), serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: var(--color-burgundy);
+  }
+  @media (min-width: 640px) {
+    .eyebrow { font-size: 1.5rem; }
+  }
+}
+
+.gold-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid var(--color-gold);
+  color: var(--color-gold-deep);
+  font-family: var(--font-cinzel), serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.8rem 1.3rem;
+  transition: background-color 0.25s, color 0.25s, border-color 0.25s;
+}
+.gold-btn:hover,
+.gold-btn:focus-visible {
+  background: var(--color-gold);
+  color: var(--color-ivory);
+}
+.gold-btn-solid {
+  background: var(--color-burgundy);
+  border-color: var(--color-burgundy);
+  color: var(--color-ivory);
+}
+.gold-btn-solid:hover,
+.gold-btn-solid:focus-visible {
+  background: var(--color-burgundy-deep);
+  border-color: var(--color-gold);
+}
+.gold-btn-light {
+  border-color: var(--color-gold-light);
+  color: var(--color-gold-light);
+}
+.gold-btn-light:hover,
+.gold-btn-light:focus-visible {
+  background: var(--color-gold-light);
+  color: var(--color-burgundy-deep);
+}
+
+.field {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--color-gold) 70%, transparent);
+  padding: 0.55rem 0.1rem;
+  font-size: 1.15rem;
+  color: var(--color-ink);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.field:focus {
+  border-color: var(--color-burgundy);
+}
+.field::placeholder {
+  color: #8f8186;
+}
+
+/* ---------- Entrance animation ---------- */
+.rise {
+  opacity: 0;
+  animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; opacity: 1; }
+  .gold-foil, .gold-foil-light { animation: none; }
+  html { scroll-behavior: auto; }
 }

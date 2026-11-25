@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#6E1A33"/>
+  <g transform="translate(32 32)">
+    <!-- 8-point khatam star in gold -->
+    <rect x="-17" y="-17" width="34" height="34" fill="#D4AF5A"/>
+    <rect x="-17" y="-17" width="34" height="34" fill="#D4AF5A" transform="rotate(45)"/>
+    <rect x="-13" y="-13" width="26" height="26" fill="#6E1A33"/>
+    <rect x="-13" y="-13" width="26" height="26" fill="#6E1A33" transform="rotate(45)"/>
+    <!-- blush bloom -->
+    <g fill="#F2D4DC">
+      <path d="M0 -2 C4 -4 4 -9 0 -11 C-4 -9 -4 -4 0 -2Z"/>
+      <path d="M0 -2 C4 -4 4 -9 0 -11 C-4 -9 -4 -4 0 -2Z" transform="rotate(72)"/>
+      <path d="M0 -2 C4 -4 4 -9 0 -11 C-4 -9 -4 -4 0 -2Z" transform="rotate(144)"/>
+      <path d="M0 -2 C4 -4 4 -9 0 -11 C-4 -9 -4 -4 0 -2Z" transform="rotate(216)"/>
+      <path d="M0 -2 C4 -4 4 -9 0 -11 C-4 -9 -4 -4 0 -2Z" transform="rotate(288)"/>
+    </g>
+    <circle r="2.6" fill="#D4AF5A"/>
+  </g>
+</svg>
