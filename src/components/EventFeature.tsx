@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { InviteEvent } from "@/config/invite";
 import { formatDate, formatHijri, formatTime, mapLink } from "@/lib/dates";
+import { makeFill } from "@/lib/tags";
 import { AddToCalendar } from "./AddToCalendar";
 
 /** Burgundy date panel + high-contrast details. Used on Home (compact) and The Day page. */
@@ -18,12 +19,8 @@ export function EventFeature({
   const d = new Date(event.start);
   const part = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat("en-GB", { ...o, timeZone }).format(d);
   const hijri = formatHijri(event.start, timeZone);
-  // Notes can use {time}, {date} and {venue}; they follow the event details.
-  const fill = (t: string) =>
-    t
-      .replaceAll("{time}", formatTime(event.start, timeZone))
-      .replaceAll("{date}", formatDate(event.start, timeZone))
-      .replaceAll("{venue}", event.venue);
+  // Description and notes can use merge tags like {time}, {date}, {venue}.
+  const fill = makeFill(event, timeZone);
 
   return (
     <article id={event.key} className="grid scroll-mt-28 md:grid-cols-[4fr_7fr]">
@@ -44,7 +41,7 @@ export function EventFeature({
       <div className="card flex flex-col justify-center px-6 py-10 sm:px-12">
         <p className="eyebrow">{event.hostedBy}</p>
         <h3 className="mt-2 font-script text-6xl leading-tight text-ink sm:text-7xl">{event.title}</h3>
-        <p className="mt-4 font-serif text-xl leading-relaxed text-ink sm:text-2xl">{event.description}</p>
+        <p className="mt-4 font-serif text-xl leading-relaxed text-ink sm:text-2xl">{fill(event.description)}</p>
 
         {/* key facts */}
         <dl className="mt-8 divide-y divide-gold/40 border-y-2 border-gold">

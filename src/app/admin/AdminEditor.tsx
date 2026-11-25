@@ -3,10 +3,84 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { InviteContent } from "@/config/invite";
+import { MERGE_TAGS } from "@/lib/tags";
 import { logout, saveContent } from "./actions";
 import { PhotoField, PhotoGrid } from "./PhotoUpload";
 
 type Draft = InviteContent;
+
+/* ---------- merge tag copy helpers ---------- */
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed";
+    ta.style.opacity = "0";
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+}
+
+function CopyIcon({ done }: { done: boolean }) {
+  return done ? (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+      <path d="M5 13l4 4L19 7" />
+    </svg>
+  ) : (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <rect x="9" y="9" width="11" height="11" rx="1.5" />
+      <path d="M5 15V5.5A1.5 1.5 0 0 1 6.5 4H15" />
+    </svg>
+  );
+}
+
+/** A tag chip such as {venue} with a copy icon. Click to copy it, then paste into any text. */
+function CopyTag({ tag, title, compact = false }: { tag: string; title?: string; compact?: boolean }) {
+  const [done, setDone] = useState(false);
+  return (
+    <button
+      type="button"
+      title={title ?? `Copy ${tag}`}
+      aria-label={`Copy ${tag}`}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        void copyText(tag).then(() => {
+          setDone(true);
+          setTimeout(() => setDone(false), 1500);
+        });
+      }}
+      className={`inline-flex items-center gap-1.5 border border-gold/60 bg-ivory font-mono text-gold-deep hover:bg-gold hover:text-ivory ${
+        compact ? "px-1.5 py-0.5 text-xs" : "px-2.5 py-1 text-sm"
+      } ${done ? "!border-sage-deep !bg-sage-deep !text-ivory" : ""}`}
+    >
+      {!compact && <span>{done ? "Copied" : tag}</span>}
+      <CopyIcon done={done} />
+    </button>
+  );
+}
+
+/** Row of all merge tags, shown wherever they can be used. */
+function TagBar({ note }: { note?: string }) {
+  return (
+    <div className="border border-gold/40 bg-blush/50 px-4 py-3">
+      <p className="font-serif text-lg text-ink">
+        <strong>Merge tags</strong>: copy one and paste it into the text. It fills in automatically from The Day.
+        {note ? ` ${note}` : ""}
+      </p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {MERGE_TAGS.map((t) => (
+          <CopyTag key={t.tag} tag={t.tag} title={`${t.label}, e.g. ${t.example}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 /* ---------- small field components ---------- */
 
@@ -18,6 +92,7 @@ function Text({
   placeholder,
   hint,
   dir,
+  tag,
 }: {
   label: string;
   value: string | number;
@@ -26,10 +101,15 @@ function Text({
   placeholder?: string;
   hint?: string;
   dir?: "rtl";
+  /** If set, shows a copy icon that copies this merge tag, e.g. "{venue}" */
+  tag?: string;
 }) {
   return (
     <label className="block">
-      <span className="caps text-sm text-gold-deep">{label}</span>
+      <span className="flex items-center gap-2">
+        <span className="caps text-sm text-gold-deep">{label}</span>
+        {tag && <CopyTag tag={tag} compact />}
+      </span>
       <input
         className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg text-ink outline-none focus:border-burgundy"
         type={type}
@@ -43,10 +123,25 @@ function Text({
   );
 }
 
-function Area({ label, value, onChange, rows = 3 }: { label: string; value: string; onChange: (v: string) => void; rows?: number }) {
+function Area({
+  label,
+  value,
+  onChange,
+  rows = 3,
+  tag,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  rows?: number;
+  tag?: string;
+}) {
   return (
     <label className="block">
-      <span className="caps text-sm text-gold-deep">{label}</span>
+      <span className="flex items-center gap-2">
+        <span className="caps text-sm text-gold-deep">{label}</span>
+        {tag && <CopyTag tag={tag} compact />}
+      </span>
       <textarea
         className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg leading-relaxed text-ink outline-none focus:border-burgundy"
         rows={rows}
@@ -239,8 +334,8 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
           {draft.events.map((ev, i) => (
             <div key={i} className="space-y-4 border-t border-gold/30 pt-5">
               <div className="grid gap-4 sm:grid-cols-3">
-                <Text label="Date" type="date" value={ev.date} onChange={(v) => update((d) => void (d.events[i].date = v))} />
-                <Text label="Time" type="time" value={ev.time} onChange={(v) => update((d) => void (d.events[i].time = v))} />
+                <Text label="Date" tag="{date}" type="date" value={ev.date} onChange={(v) => update((d) => void (d.events[i].date = v))} />
+                <Text label="Time" tag="{time}" type="time" value={ev.time} onChange={(v) => update((d) => void (d.events[i].time = v))} />
                 <Text
                   label="Length (hours)"
                   type="number"
@@ -252,7 +347,7 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
               <div className="grid gap-4 sm:grid-cols-2">
                 <Text label="Title" value={ev.title} onChange={(v) => update((d) => void (d.events[i].title = v))} />
                 <Text label="Hosted by" value={ev.hostedBy} onChange={(v) => update((d) => void (d.events[i].hostedBy = v))} />
-                <Text label="Venue" value={ev.venue} onChange={(v) => update((d) => void (d.events[i].venue = v))} />
+                <Text label="Venue" tag="{venue}" value={ev.venue} onChange={(v) => update((d) => void (d.events[i].venue = v))} />
                 <Text
                   label="Map link (optional)"
                   value={ev.mapUrl}
@@ -260,8 +355,9 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
                   hint="Leave empty to search Google Maps for the address."
                 />
               </div>
-              <Area label="Address" rows={2} value={ev.address} onChange={(v) => update((d) => void (d.events[i].address = v))} />
+              <Area label="Address" tag="{address}" rows={2} value={ev.address} onChange={(v) => update((d) => void (d.events[i].address = v))} />
               <Area label="Description" value={ev.description} onChange={(v) => update((d) => void (d.events[i].description = v))} />
+              <TagBar note="Works in the description, the notes below, and FAQ answers." />
               <StringList
                 label="Notes (bullet points)"
                 items={ev.notes}
@@ -417,10 +513,7 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
 
         {/* ---------- FAQ ---------- */}
         <Section title="FAQ">
-          <p className="font-serif text-lg text-muted">
-            Answers can include <strong>{"{time}"}</strong>, <strong>{"{arriveTime}"}</strong> (30 minutes before),{" "}
-            <strong>{"{date}"}</strong> and <strong>{"{venue}"}</strong>. They fill in automatically from The Day.
-          </p>
+          <TagBar />
           {draft.faqs.map((f, i) => (
             <div key={i} className="flex gap-2 border-t border-gold/30 pt-4 first:border-t-0 first:pt-0">
               <div className="w-full space-y-2">

@@ -1,23 +1,13 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/PageHeader";
-import { formatDate, formatTime } from "@/lib/dates";
 import { getInvite } from "@/lib/invite";
+import { makeFill } from "@/lib/tags";
 
 export const metadata: Metadata = { title: "FAQ" };
 
 export default async function FaqPage() {
   const { invite, sortedEvents } = await getInvite();
-  const ev = sortedEvents[0];
-  // FAQ answers can use {time}, {arriveTime}, {date} and {venue}; they follow the details set in /admin.
-  const tokens: Record<string, string> = ev
-    ? {
-        time: formatTime(ev.start, invite.timeZone),
-        arriveTime: formatTime(new Date(new Date(ev.start).getTime() - 30 * 60_000).toISOString(), invite.timeZone),
-        date: formatDate(ev.start, invite.timeZone),
-        venue: ev.venue,
-      }
-    : {};
-  const fill = (t: string) => t.replace(/\{(\w+)\}/g, (m, k: string) => tokens[k] ?? m);
+  const fill = makeFill(sortedEvents[0], invite.timeZone);
   return (
     <>
       <PageHeader eyebrow="Good to know" title="Questions" subtitle="Everything you might want to know before the big day." />
