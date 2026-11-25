@@ -30,8 +30,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (secrets): ignore all, but keep the template
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -40,5 +41,14 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# local admin content
+# local admin content (saved by /admin when no Blob store is connected)
 .data/
+
+# editors
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# logs
+*.log

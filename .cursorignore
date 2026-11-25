@@ -1,0 +1,30 @@
+# Files Cursor should not index or send to the model.
+
+# secrets and local content (the admin password lives in .env.local)
+.env
+.env.*
+!.env.example
+.data/
+
+# dependencies and build output
+node_modules/
+.next/
+out/
+build/
+coverage/
+.vercel/
+*.tsbuildinfo
+next-env.d.ts
+
+# large generated / lock files
+package-lock.json
+
+# binary assets
+*.ico
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.woff
+*.woff2
+*.pem
