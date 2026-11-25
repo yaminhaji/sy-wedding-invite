@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import type { InviteContent } from "@/config/invite";
 import { logout, saveContent } from "./actions";
+import { PhotoField, PhotoGrid } from "./PhotoUpload";
 
 type Draft = InviteContent;
 
@@ -203,11 +204,10 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
                 placeholder="Mr. & Mrs. …"
                 hint="Father & Mother, separated by &. Each shows on its own line. Leave empty to hide."
               />
-              <Text
-                label="Photo URL (optional)"
+              <PhotoField
+                label="Portrait photo (optional)"
                 value={draft[who].photo}
                 onChange={(v) => update((d) => void (d[who].photo = v))}
-                placeholder="https://…"
               />
               <Text
                 label="Siblings heading"
@@ -456,12 +456,11 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
         </Section>
 
         <Section title="Gallery">
-          <StringList
-            label="Photo URLs"
-            items={draft.gallery}
-            onChange={(v) => update((d) => void (d.gallery = v))}
-            addLabel="Add photo"
-          />
+          <p className="font-serif text-lg text-muted">
+            Upload photos here. They are stored in your private Blob storage (gallery folder) and shown on the Gallery
+            page in this order. Photos are shrunk automatically before uploading.
+          </p>
+          <PhotoGrid items={draft.gallery} onChange={(v) => update((d) => void (d.gallery = v))} />
         </Section>
       </div>
 

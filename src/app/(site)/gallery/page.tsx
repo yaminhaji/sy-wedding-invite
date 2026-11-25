@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Medallion } from "@/components/Ornaments";
 import { PageHeader } from "@/components/PageHeader";
 import { getInvite } from "@/lib/invite";
@@ -19,13 +18,12 @@ export default async function GalleryPage() {
           <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
             {photos.map((src, i) => (
               <div key={src} className="card mb-4 break-inside-avoid p-2">
-                <Image
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src={src}
                   alt={`${coupleTitle} photo ${i + 1}`}
-                  width={800}
-                  height={1000}
+                  loading="lazy"
                   className="h-auto w-full"
-                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 />
               </div>
             ))}
