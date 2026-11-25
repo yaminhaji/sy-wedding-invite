@@ -42,16 +42,26 @@ export function ContactList({ contacts }: { contacts: readonly { name: string; p
               {c.phone}
             </a>
           </div>
-          <a
-            href={waLink(c.phone)}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Message ${c.name} on WhatsApp`}
-            title="Message on WhatsApp"
-            className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-white shadow-sm transition-transform hover:scale-110"
-          >
-            <WhatsAppIcon />
-          </a>
+          <div className="flex shrink-0 items-center gap-2">
+            <a
+              href={telLink(c.phone)}
+              aria-label={`Call ${c.name}`}
+              title="Call"
+              className="flex size-11 items-center justify-center rounded-full bg-burgundy text-ivory shadow-sm transition-transform hover:scale-110"
+            >
+              <PhoneIcon size={21} />
+            </a>
+            <a
+              href={waLink(c.phone)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Message ${c.name} on WhatsApp`}
+              title="Message on WhatsApp"
+              className="flex size-11 items-center justify-center rounded-full bg-[#25D366] text-white shadow-sm transition-transform hover:scale-110"
+            >
+              <WhatsAppIcon />
+            </a>
+          </div>
         </li>
       ))}
     </ul>

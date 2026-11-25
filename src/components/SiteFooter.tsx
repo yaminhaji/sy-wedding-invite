@@ -10,7 +10,7 @@ export async function SiteFooter() {
   return (
     <footer className="mt-auto">
       <div className="pattern-strip" />
-      <div className="bg-ivory px-6 py-14 text-center">
+      <div className="bg-ivory px-6 pb-24 pt-14 text-center sm:pb-14">
         <Medallion className="mx-auto" size={48} />
         <p
           className="mx-auto mt-6 max-w-2xl text-balance font-ruqaa text-3xl font-semibold leading-[2] text-gold-deep sm:text-5xl"
@@ -32,7 +32,7 @@ export async function SiteFooter() {
           <div className="mt-12 border-t border-gold/40 pt-10">
             <p className="eyebrow text-lg sm:text-xl">Contact</p>
             <p className="mx-auto mb-5 mt-1 max-w-md font-serif text-lg text-muted">
-              Call, or tap the green icon to message on WhatsApp.
+              Tap the phone icon to call, or the green icon to message on WhatsApp.
             </p>
             <ContactList contacts={invite.contacts} />
           </div>

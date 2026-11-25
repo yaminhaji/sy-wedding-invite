@@ -19,6 +19,7 @@ export function SiteHeader({ monogram }: { monogram: string }) {
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
   return (
+    <>
     <header className="sticky top-0 z-40 border-b border-gold/25 bg-ivory/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6">
         <Link href="/" className="caps flex items-center gap-2 text-lg text-burgundy sm:text-xl" onClick={() => setOpen(false)}>
@@ -64,8 +65,10 @@ export function SiteHeader({ monogram }: { monogram: string }) {
         </div>
       </div>
 
+    </header>
+
       {open && (
-        <div className="fixed inset-x-0 bottom-0 top-16 z-40 overflow-y-auto bg-ivory sm:top-20 lg:hidden">
+        <div className="fixed inset-x-0 bottom-0 top-16 z-30 overflow-y-auto bg-ivory sm:top-20 lg:hidden">
           <div className="pattern-strip" />
           <nav aria-label="Mobile" className="px-6 py-10">
             <ul className="space-y-1 text-center">
@@ -86,6 +89,6 @@ export function SiteHeader({ monogram }: { monogram: string }) {
           </nav>
         </div>
       )}
-    </header>
+    </>
   );
 }
