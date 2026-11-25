@@ -29,21 +29,23 @@ export default async function GalleryPage() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {Array.from({ length: 6 }, (_, i) => (
-              <div
-                key={i}
-                className={`flex items-center justify-center border border-gold/60 bg-blush ${
-                  i % 3 === 1 ? "aspect-[3/4]" : "aspect-square"
-                }`}
-              >
-                <div className="flex flex-col items-center">
+          <>
+            <p className="mb-10 text-center font-serif text-3xl font-semibold text-burgundy-deep sm:text-4xl">
+              Photos coming soon
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: 6 }, (_, i) => (
+                <div
+                  key={i}
+                  className={`flex items-center justify-center border border-gold/60 bg-blush ${
+                    i % 3 === 1 ? "aspect-[3/4]" : "aspect-square"
+                  }`}
+                >
                   <Medallion size={44} />
-                  {i === 1 && <p className="eyebrow mt-4">Photos coming soon</p>}
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </>
         )}
       </section>
     </>
