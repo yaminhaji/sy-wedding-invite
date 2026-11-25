@@ -43,6 +43,8 @@ const amiri = Amiri({
 export async function generateMetadata(): Promise<Metadata> {
   const { invite, coupleTitle } = await getInvite();
   return {
+    // A draft site asks search engines to stay away until it is switched to Live.
+    robots: invite.status === "draft" ? { index: false, follow: false } : undefined,
     title: {
       default: `${coupleTitle} · Nikaah & Walima`,
       template: `%s · ${coupleTitle}`,

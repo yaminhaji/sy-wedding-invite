@@ -43,6 +43,8 @@ export interface InviteEvent extends EventContent {
 }
 
 export interface InviteContent {
+  /** "draft" shows a ribbon on every page and asks search engines not to index the site */
+  status: "draft" | "live";
   bride: Person;
   groom: Person;
   /** IANA timezone used to display all dates and times */
@@ -107,6 +109,8 @@ const SAYAJI_ADDRESS =
   "Near Bhimnath Bridge, Opposite Parsi Agyari Ground, Parshuram Nagar, Sayajiganj, Vadodara, Gujarat 390007, India";
 
 export const defaultContent: InviteContent = {
+  status: "live",
+
   // The bride is always shown first.
   bride: { name: "Sana Suhel Patel", parents: "Suhel Vali Patel & Rehana Suhel Patel", relation: "daughter of", photo: "",
     siblingsLabel: "Siblings", siblings: ["Ziyad Suhel Patel", "Ibrahim Suhel Patel"] },

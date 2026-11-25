@@ -261,7 +261,17 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
       <header className="sticky top-0 z-30 border-b border-gold/40 bg-ivory/95 backdrop-blur">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div>
-            <p className="font-script text-4xl leading-none text-burgundy">Admin</p>
+            <p className="flex items-center gap-2 font-script text-4xl leading-none text-burgundy">
+              Admin
+              <span
+                className={`caps rounded-sm px-2 py-0.5 font-sans text-[0.7rem] font-bold tracking-[0.18em] ${
+                  saved.status === "draft" ? "bg-burgundy-deep text-gold-light" : "bg-sage text-sage-deep"
+                }`}
+                title="Status of the published site"
+              >
+                {saved.status === "draft" ? "Draft" : "Live"}
+              </span>
+            </p>
             <p className="font-serif text-sm text-muted">Saving to {storage}</p>
           </div>
           <div className="flex flex-wrap items-center gap-2">
@@ -281,6 +291,43 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
 
       <div className="mx-auto max-w-4xl space-y-8 px-4 pt-8">
         {/* ---------- Couple ---------- */}
+        <Section title="Site Status">
+          <p className="font-serif text-lg text-muted">
+            While the site is a <strong>Draft</strong>, a ribbon appears across the top of every page saying details may
+            change, and search engines are asked not to list it. Switch to <strong>Live</strong> when it&apos;s final.
+            Press Save to apply.
+          </p>
+          <div className="grid grid-cols-2 gap-3" role="radiogroup" aria-label="Site status">
+            {(
+              [
+                ["draft", "Draft", "Ribbon shown"],
+                ["live", "Live", "No ribbon"],
+              ] as const
+            ).map(([value, label, note]) => {
+              const on = draft.status === value;
+              return (
+                <button
+                  key={value}
+                  type="button"
+                  role="radio"
+                  aria-checked={on}
+                  onClick={() => update((d) => void (d.status = value))}
+                  className={`border-2 px-4 py-4 text-left transition-colors ${
+                    on
+                      ? value === "draft"
+                        ? "border-burgundy-deep bg-burgundy-deep text-ivory"
+                        : "border-sage-deep bg-sage-deep text-ivory"
+                      : "border-gold/50 bg-ivory text-ink hover:border-gold"
+                  }`}
+                >
+                  <span className="caps block text-lg font-semibold">{label}</span>
+                  <span className={`block font-serif text-base ${on ? "text-ivory/90" : "text-muted"}`}>{note}</span>
+                </button>
+              );
+            })}
+          </div>
+        </Section>
+
         <Section title="The Couple">
           {(["bride", "groom"] as const).map((who) => (
             <div key={who} className="grid gap-4 border-t border-gold/30 pt-5 first:border-t-0 first:pt-0 sm:grid-cols-2">

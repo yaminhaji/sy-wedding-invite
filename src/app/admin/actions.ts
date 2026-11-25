@@ -48,6 +48,7 @@ export async function saveContent(content: InviteContent): Promise<{ ok: boolean
     e.notes = e.notes.map((n) => n.trim()).filter(Boolean);
   }
   for (const p of [clean.bride, clean.groom]) p.siblings = p.siblings.map((t) => t.trim()).filter(Boolean);
+  if (clean.status !== "draft" && clean.status !== "live") clean.status = "live";
   clean.messages.intimate = clean.messages.intimate.filter((t) => t.trim());
   clean.messages.announce = clean.messages.announce.filter((t) => t.trim());
   clean.saveTheDate.preParagraphs = clean.saveTheDate.preParagraphs.filter((t) => t.trim());

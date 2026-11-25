@@ -1,4 +1,5 @@
 import { ChatWidget } from "@/components/ChatWidget";
+import { DraftRibbon } from "@/components/DraftRibbon";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import { getInvite } from "@/lib/invite";
@@ -9,6 +10,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   const chatOn = invite.chat.enabled && Boolean(process.env.ANTHROPIC_API_KEY);
   return (
     <>
+      <DraftRibbon status={invite.status} />
       <SiteHeader monogram={monogram} />
       <main className="flex-1">{children}</main>
       <SiteFooter />
