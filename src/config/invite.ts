@@ -99,7 +99,7 @@ const SAYAJI_ADDRESS =
 export const defaultContent: InviteContent = {
   // The bride is always shown first.
   bride: { name: "Sana Suhel Patel", parents: "Suhel Vali Patel & Rehana Suhel Patel", relation: "daughter of", photo: "",
-    siblingsLabel: "Brothers", siblings: ["Ziyad Suhel Patel", "Ibrahim Suhel Patel"] },
+    siblingsLabel: "Siblings", siblings: ["Ziyad Suhel Patel", "Ibrahim Suhel Patel"] },
   groom: { name: "Yamin Rustam Haji", parents: "Rustam Haji Ibrahim & Shamsunnisa Begum", relation: "son of", photo: "",
     siblingsLabel: "Siblings", siblings: ["Yasin Rustam Haji", "Asna Rustam Haji"] },
 
