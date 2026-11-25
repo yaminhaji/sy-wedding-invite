@@ -330,3 +330,16 @@ body {
   .gold-foil, .gold-foil-light { animation: none; }
   html { scroll-behavior: auto; }
 }
+
+/* ---------- Chat widget entrance ---------- */
+.chat-pop {
+  animation: chat-pop 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  transform-origin: bottom right;
+}
+@keyframes chat-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-pop { animation: none; }
+}
