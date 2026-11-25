@@ -88,6 +88,16 @@ export interface InviteContent {
     preClosing: string;
   };
   bringNote: string;
+  /** The chat assistant button on the main site */
+  chat: {
+    enabled: boolean;
+    title: string;
+    greeting: string;
+    /** Tap-to-ask example questions */
+    suggestions: string[];
+    /** Extra facts only the assistant should know (not shown on the site) */
+    extraInfo: string;
+  };
   gallery: string[];
   faqs: { q: string; a: string }[];
   contacts: { name: string; phone: string }[];
@@ -113,7 +123,7 @@ export const defaultContent: InviteContent = {
       arabicTitle: "نكاح و وليمة",
       date: "2026-12-08",
       time: "18:00",
-      durationHours: 5,
+      durationHours: 2,
       hostedBy: "Hosted by both families",
       venue: "Sayaji Hotel Vadodara",
       address: SAYAJI_ADDRESS,
@@ -186,6 +196,15 @@ export const defaultContent: InviteContent = {
   },
 
   bringNote: "Please bring yourselves, and blessings.",
+
+  chat: {
+    enabled: true,
+    title: "Ask about the wedding",
+    greeting:
+      "Assalamu alaikum! I can help with the date, time, venue, directions, where to stay, what to wear and more. What would you like to know?",
+    suggestions: ["When and where is it?", "What should I wear?", "Where can I stay?", "Who can I contact?"],
+    extraInfo: "",
+  },
 
   gallery: [],
 

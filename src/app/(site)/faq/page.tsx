@@ -26,19 +26,9 @@ export default async function FaqPage() {
         {invite.contacts.length > 0 && (
           <div className="mt-14 text-center">
             <p className="eyebrow">Still have a question?</p>
-            <ul className="mt-3 space-y-1 font-serif text-2xl text-ink">
-              {invite.contacts.map((c) => (
-                <li key={c.phone}>
-                  {c.name} ·{" "}
-                  <a
-                    className="text-gold-deep underline decoration-gold/40 underline-offset-4"
-                    href={`tel:${c.phone.replace(/[^\d+]/g, "")}`}
-                  >
-                    {c.phone}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <p className="mt-2 font-serif text-2xl text-ink">
+              Call or WhatsApp any of us. Our contact details are just below.
+            </p>
           </div>
         )}
       </section>

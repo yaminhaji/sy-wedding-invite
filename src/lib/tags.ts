@@ -1,10 +1,12 @@
 import type { InviteEvent } from "@/config/invite";
-import { formatDate, formatTime } from "./dates";
+import { formatDate, formatTime, formatTimeRange } from "./dates";
 
 /** Merge tags that can be typed into descriptions, notes and FAQ answers. They fill in from "The Day". */
 export const MERGE_TAGS = [
   { tag: "{date}", label: "Date", example: "8 December 2026" },
-  { tag: "{time}", label: "Time", example: "6:00 PM" },
+  { tag: "{time}", label: "Start time", example: "6:00 PM" },
+  { tag: "{endTime}", label: "End time", example: "8:00 PM" },
+  { tag: "{timeRange}", label: "Time range", example: "6:00 – 8:00 PM" },
   { tag: "{arriveTime}", label: "Arrive by (30 min before)", example: "5:30 PM" },
   { tag: "{venue}", label: "Venue", example: "Sayaji Hotel Vadodara" },
   { tag: "{address}", label: "Address", example: "Near Bhimnath Bridge…" },
@@ -16,6 +18,8 @@ export function makeFill(ev: InviteEvent | undefined, timeZone: string) {
     ? {
         date: formatDate(ev.start, timeZone),
         time: formatTime(ev.start, timeZone),
+        endTime: formatTime(new Date(new Date(ev.start).getTime() + ev.durationHours * 3_600_000).toISOString(), timeZone),
+        timeRange: formatTimeRange(ev, timeZone),
         arriveTime: formatTime(new Date(new Date(ev.start).getTime() - 30 * 60_000).toISOString(), timeZone),
         venue: ev.venue,
         address: ev.address,

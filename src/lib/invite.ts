@@ -16,6 +16,7 @@ export function mergeContent(stored: Partial<InviteContent> | null): InviteConte
     travel: { ...d.travel, ...stored.travel, stay: { ...d.travel.stay, ...stored.travel?.stay } },
     messages: { ...d.messages, ...stored.messages },
     saveTheDate: { ...d.saveTheDate, ...stored.saveTheDate },
+    chat: { ...d.chat, ...stored.chat },
     events: (stored.events?.length ? stored.events : d.events).map((e, i) => ({
       ...(d.events[i] ?? d.events[0]),
       ...e,

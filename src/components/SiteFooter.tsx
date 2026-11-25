@@ -2,6 +2,7 @@ import Link from "next/link";
 import { navLinks } from "@/config/invite";
 import { formatDate } from "@/lib/dates";
 import { getInvite } from "@/lib/invite";
+import { ContactList } from "./ContactList";
 import { Medallion } from "./Ornaments";
 
 export async function SiteFooter() {
@@ -27,7 +28,17 @@ export async function SiteFooter() {
           {sortedEvents.map((e) => formatDate(e.start, invite.timeZone)).join("  ·  ")}
         </p>
 
-        <nav aria-label="Footer" className="mt-8">
+        {invite.contacts.length > 0 && (
+          <div className="mt-12 border-t border-gold/40 pt-10">
+            <p className="eyebrow text-lg sm:text-xl">Contact</p>
+            <p className="mx-auto mb-5 mt-1 max-w-md font-serif text-lg text-muted">
+              Call, or tap the green icon to message on WhatsApp.
+            </p>
+            <ContactList contacts={invite.contacts} />
+          </div>
+        )}
+
+        <nav aria-label="Footer" className="mt-10">
           <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {navLinks.map((l) => (
               <li key={l.href}>

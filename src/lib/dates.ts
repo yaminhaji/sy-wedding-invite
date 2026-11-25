@@ -24,6 +24,16 @@ export function formatTime(iso: string, timeZone: string) {
   }).format(new Date(iso));
 }
 
+/** "6:00 – 8:00 PM" (or "11:00 AM – 1:00 PM" when it crosses noon). */
+export function formatTimeRange(event: { start: string; durationHours: number }, timeZone: string) {
+  const start = formatTime(event.start, timeZone);
+  const endIso = new Date(new Date(event.start).getTime() + event.durationHours * 3_600_000).toISOString();
+  const end = formatTime(endIso, timeZone);
+  const mer = (t: string) => t.slice(-2);
+  const left = mer(start) === mer(end) ? start.slice(0, -3) : start;
+  return `${left} – ${end}`;
+}
+
 export function formatHijri(iso: string, timeZone: string) {
   try {
     return new Intl.DateTimeFormat("en-US-u-ca-islamic-umalqura", {

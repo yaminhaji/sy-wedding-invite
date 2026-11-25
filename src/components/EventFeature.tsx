@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { InviteEvent } from "@/config/invite";
-import { formatDate, formatHijri, formatTime, mapLink } from "@/lib/dates";
+import { formatDate, formatHijri, formatTimeRange, mapLink } from "@/lib/dates";
 import { makeFill } from "@/lib/tags";
 import { AddToCalendar } from "./AddToCalendar";
 
@@ -34,7 +34,7 @@ export function EventFeature({
           </p>
           {hijri && <p className="mt-2 font-serif text-xl text-ivory/90">{hijri}</p>}
           <div className="mx-auto my-5 h-px w-16 bg-gold-light" />
-          <p className="caps text-2xl font-semibold text-gold-light">{formatTime(event.start, timeZone)}</p>
+          <p className="caps text-2xl font-semibold text-gold-light">{formatTimeRange(event, timeZone)}</p>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export function EventFeature({
           <div className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">
             <dt className="caps pt-1 text-base font-semibold text-burgundy sm:text-lg">Time</dt>
             <dd className="font-serif text-2xl font-semibold text-ink sm:text-[1.7rem]">
-              {formatTime(event.start, timeZone)}
+              {formatTimeRange(event, timeZone)}
             </dd>
           </div>
           <div className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">

@@ -335,13 +335,13 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
             <div key={i} className="space-y-4 border-t border-gold/30 pt-5">
               <div className="grid gap-4 sm:grid-cols-3">
                 <Text label="Date" tag="{date}" type="date" value={ev.date} onChange={(v) => update((d) => void (d.events[i].date = v))} />
-                <Text label="Time" tag="{time}" type="time" value={ev.time} onChange={(v) => update((d) => void (d.events[i].time = v))} />
+                <Text label="Start time" tag="{time}" type="time" value={ev.time} onChange={(v) => update((d) => void (d.events[i].time = v))} />
                 <Text
                   label="Length (hours)"
                   type="number"
                   value={ev.durationHours}
                   onChange={(v) => update((d) => void (d.events[i].durationHours = Number(v)))}
-                  hint="Used for calendar invites."
+                  hint="So 6:00 PM + 2 hours shows as 6:00 – 8:00 PM. Also used for calendar invites."
                 />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -546,6 +546,41 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
             </div>
           ))}
           <AddBtn onClick={() => update((d) => void d.contacts.push({ name: "", phone: "" }))}>Add contact</AddBtn>
+        </Section>
+
+        <Section title="Chat Assistant">
+          <p className="font-serif text-lg text-muted">
+            A chat button on the main site where guests can ask about the date, venue, dress, travel and more. It
+            answers only from the information on this site and in this admin page. It needs an{" "}
+            <strong>ANTHROPIC_API_KEY</strong> set on the server; without one the button stays hidden.
+          </p>
+          <label className="flex cursor-pointer items-center gap-3 font-serif text-xl text-ink">
+            <input
+              type="checkbox"
+              className="size-5 accent-burgundy"
+              checked={draft.chat.enabled}
+              onChange={(e) => update((d) => void (d.chat.enabled = e.target.checked))}
+            />
+            Show the chat assistant
+          </label>
+          <Text label="Title" value={draft.chat.title} onChange={(v) => update((d) => void (d.chat.title = v))} />
+          <Area label="Greeting" rows={3} value={draft.chat.greeting} onChange={(v) => update((d) => void (d.chat.greeting = v))} />
+          <StringList
+            label="Example questions (tap to ask)"
+            items={draft.chat.suggestions}
+            onChange={(v) => update((d) => void (d.chat.suggestions = v))}
+            addLabel="Add question"
+          />
+          <Area
+            label="Extra facts for the assistant (optional)"
+            rows={5}
+            value={draft.chat.extraInfo}
+            onChange={(v) => update((d) => void (d.chat.extraInfo = v))}
+          />
+          <p className="font-serif text-base text-muted">
+            Anything you write here is known only to the assistant and is not shown on the site, for example parking
+            details or a dress hint. Everything else it knows comes from the other sections of this page.
+          </p>
         </Section>
 
         <Section title="Gallery">

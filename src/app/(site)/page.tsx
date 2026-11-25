@@ -4,7 +4,7 @@ import { EventFeature } from "@/components/EventFeature";
 import { Allah, ArchPortrait, Flourish, Mihrab, Rosette } from "@/components/Ornaments";
 import { firstName } from "@/config/invite";
 import { getInvite } from "@/lib/invite";
-import { formatDate, formatTime } from "@/lib/dates";
+import { formatDate, formatTimeRange } from "@/lib/dates";
 
 export default async function Home() {
   const { invite, sortedEvents, coupleTitle } = await getInvite();
@@ -42,7 +42,7 @@ export default async function Home() {
 
             <p className="caps mt-6 text-base text-ink sm:text-lg">{formatDate(main.start, timeZone)}</p>
             <p className="mt-1 font-serif text-xl text-muted">
-              {formatTime(main.start, timeZone)} · {city}
+              {formatTimeRange(main, timeZone)} · {city}
             </p>
 
             <div className="mt-8">

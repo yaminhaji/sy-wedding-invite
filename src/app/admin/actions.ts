@@ -53,6 +53,8 @@ export async function saveContent(content: InviteContent): Promise<{ ok: boolean
   clean.saveTheDate.preParagraphs = clean.saveTheDate.preParagraphs.filter((t) => t.trim());
   clean.saveTheDate.reasons = clean.saveTheDate.reasons.map((t) => t.trim()).filter(Boolean);
   if (!["auto", "before", "after"].includes(clean.saveTheDate.mode)) clean.saveTheDate.mode = "auto";
+  clean.chat.suggestions = clean.chat.suggestions.map((t) => t.trim()).filter(Boolean).slice(0, 6);
+  clean.chat.extraInfo = clean.chat.extraInfo.slice(0, 4000);
   clean.faqs = clean.faqs.filter((f) => f.q.trim());
   clean.contacts = clean.contacts.filter((c) => c.name.trim() || c.phone.trim());
   clean.gallery = clean.gallery.map((g) => g.trim()).filter(Boolean);
