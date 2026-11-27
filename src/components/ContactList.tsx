@@ -47,7 +47,7 @@ export function ContactList({ contacts }: { contacts: readonly { name: string; p
               href={telLink(c.phone)}
               aria-label={`Call ${c.name}`}
               title="Call"
-              className="flex size-11 items-center justify-center rounded-full bg-burgundy text-ivory shadow-sm transition-transform hover:scale-110"
+              className="flex size-11 items-center justify-center rounded-full bg-rosegold text-ivory shadow-sm transition-transform hover:scale-110"
             >
               <PhoneIcon size={21} />
             </a>

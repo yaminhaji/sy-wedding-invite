@@ -25,7 +25,7 @@ export function EventFeature({
   return (
     <article id={event.key} className="grid scroll-mt-28 md:grid-cols-[4fr_7fr]">
       {/* date panel: solid, high contrast */}
-      <div className="burgundy-band flex items-center justify-center px-6 py-12 text-center">
+      <div className="rosegold-band flex items-center justify-center px-6 py-12 text-center">
         <div>
           <p className="caps text-sm font-semibold text-gold-light sm:text-base">{part({ weekday: "long" })}</p>
           <p className="mt-1 font-serif text-[8rem] font-semibold leading-none text-ivory">{part({ day: "numeric" })}</p>
@@ -46,19 +46,19 @@ export function EventFeature({
         {/* key facts */}
         <dl className="mt-8 divide-y divide-gold/40 border-y-2 border-gold">
           <div className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">
-            <dt className="caps pt-1 text-base font-semibold text-burgundy sm:text-lg">Date</dt>
+            <dt className="caps pt-1 text-base font-semibold text-rosegold sm:text-lg">Date</dt>
             <dd className="font-serif text-2xl font-semibold text-ink sm:text-[1.7rem]">
               {part({ weekday: "long" })}, {formatDate(event.start, timeZone)}
             </dd>
           </div>
           <div className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">
-            <dt className="caps pt-1 text-base font-semibold text-burgundy sm:text-lg">Time</dt>
+            <dt className="caps pt-1 text-base font-semibold text-rosegold sm:text-lg">Time</dt>
             <dd className="font-serif text-2xl font-semibold text-ink sm:text-[1.7rem]">
               {formatTimeRange(event, timeZone)}
             </dd>
           </div>
           <div className="grid gap-1 py-4 sm:grid-cols-[7rem_1fr] sm:gap-6">
-            <dt className="caps pt-1 text-base font-semibold text-burgundy sm:text-lg">Venue</dt>
+            <dt className="caps pt-1 text-base font-semibold text-rosegold sm:text-lg">Venue</dt>
             <dd className="font-serif text-2xl font-semibold text-ink sm:text-[1.7rem]">
               {event.venue}
               <span className="mt-1 block text-xl font-medium leading-snug text-ink/85">{event.address}</span>
@@ -70,7 +70,7 @@ export function EventFeature({
           <ul className="mt-6 space-y-2 font-serif text-xl text-ink sm:text-2xl">
             {event.notes.map((n) => (
               <li key={n} className="flex items-baseline gap-3">
-                <span aria-hidden="true" className="shrink-0 text-[0.65em] leading-none text-burgundy">◆</span>
+                <span aria-hidden="true" className="shrink-0 text-[0.65em] leading-none text-rosegold">◆</span>
                 {fill(n)}
               </li>
             ))}

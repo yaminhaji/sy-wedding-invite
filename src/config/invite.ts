@@ -42,7 +42,43 @@ export interface InviteEvent extends EventContent {
   start: string;
 }
 
+/** The five colours that drive the whole site; every other shade is derived from these. */
+export interface Theme {
+  /** Page background (champagne) */
+  background: string;
+  /** Secondary surfaces (soft blush) */
+  blush: string;
+  /** Accent: lines, borders, ornaments (antique gold) */
+  gold: string;
+  /** Text (warm espresso) */
+  text: string;
+  /** Highlight: buttons, small headings, bands (muted rose gold) */
+  highlight: string;
+}
+
+export const defaultTheme: Theme = {
+  background: "#f6e9d3",
+  blush: "#f1d9d1",
+  gold: "#b08d4f",
+  text: "#3b2a22",
+  highlight: "#8f5a54",
+};
+
+export const themePresets: { name: string; theme: Theme }[] = [
+  { name: "Champagne & Rose Gold", theme: defaultTheme },
+  {
+    name: "Ivory, Sage & Burgundy",
+    theme: { background: "#fdfbf7", blush: "#a3b59f", gold: "#c39a45", text: "#2a2124", highlight: "#6e1a33" },
+  },
+  {
+    name: "Cream, Dusty Blue & Navy",
+    theme: { background: "#faf6ee", blush: "#cfdbe6", gold: "#b3925a", text: "#22303f", highlight: "#2f4a6b" },
+  },
+];
+
 export interface InviteContent {
+  /** Site colours, editable in /admin */
+  theme: Theme;
   /** "draft" shows a ribbon on every page and asks search engines not to index the site */
   status: "draft" | "live";
   bride: Person;
@@ -109,6 +145,7 @@ const SAYAJI_ADDRESS =
   "Near Bhimnath Bridge, Opposite Parsi Agyari Ground, Parshuram Nagar, Sayajiganj, Vadodara, Gujarat 390007, India";
 
 export const defaultContent: InviteContent = {
+  theme: defaultTheme,
   status: "live",
 
   // The bride is always shown first.

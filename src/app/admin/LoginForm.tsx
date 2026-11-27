@@ -30,7 +30,7 @@ export function LoginForm() {
             <span className="caps text-sm text-gold-deep">Password</span>
             <input id="admin-pw" name="password" type="password" required className="field" autoComplete="current-password" />
           </label>
-          {error && <p className="font-serif text-lg text-burgundy">{error}</p>}
+          {error && <p className="font-serif text-lg text-rosegold">{error}</p>}
           <button type="submit" disabled={pending} className="gold-btn gold-btn-solid w-full disabled:opacity-60">
             {pending ? "Signing in…" : "Sign in"}
           </button>

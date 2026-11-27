@@ -1,11 +1,12 @@
 /** Decorative SVG ornaments inspired by the certificate artwork. */
 
-const GOLD = "#C39A45";
-const GOLD_DEEP = "#8A6A22";
-const BURGUNDY = "#6E1A33";
-const PETAL = "#A3375A";
-const ROSE = "#E3AFBF";
-const SAGE = "#7E9A78";
+/* Colours come from the CSS theme variables, so ornaments follow whatever colours are set in /admin. */
+const GOLD = "var(--color-gold)";
+const GOLD_DEEP = "var(--color-gold-deep)";
+const ROSEGOLD = "var(--color-rosegold)";
+const PETAL = "var(--color-rosegold-soft)";
+const ROSE = "var(--color-blush)";
+const LEAF = "var(--color-gold-light)";
 
 function Bloom({ r = 1 }: { r?: number }) {
   return (
@@ -15,7 +16,7 @@ function Bloom({ r = 1 }: { r?: number }) {
           key={a}
           d="M0 -1.4 C3.2 -3 3.4 -7.6 0 -9.6 C-3.4 -7.6 -3.2 -3 0 -1.4Z"
           fill={PETAL}
-          stroke={BURGUNDY}
+          stroke={ROSEGOLD}
           strokeWidth=".5"
           transform={`rotate(${a})`}
         />
@@ -31,13 +32,13 @@ function Bloom({ r = 1 }: { r?: number }) {
 export function Medallion({ className = "", size = 56 }: { className?: string; size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 60 60" className={className} aria-hidden="true">
-      <circle cx="30" cy="30" r="28.5" fill="#FDFBF7" stroke={GOLD} strokeWidth="1.5" />
+      <circle cx="30" cy="30" r="28.5" fill="var(--color-ivory)" stroke={GOLD} strokeWidth="1.5" />
       <circle cx="30" cy="30" r="25" fill="none" stroke={GOLD} strokeWidth=".6" />
       <g transform="translate(30 30)" fill={GOLD}>
         <rect x="-13.5" y="-13.5" width="27" height="27" />
         <rect x="-13.5" y="-13.5" width="27" height="27" transform="rotate(45)" />
       </g>
-      <g transform="translate(30 30)" fill="#FDFBF7">
+      <g transform="translate(30 30)" fill="var(--color-ivory)">
         <rect x="-11" y="-11" width="22" height="22" />
         <rect x="-11" y="-11" width="22" height="22" transform="rotate(45)" />
       </g>
@@ -56,10 +57,10 @@ export function Rosette({ className = "", size = 44 }: { className?: string; siz
           <path key={r} d="M0 -3 C5 -6 5 -14 0 -18 C-5 -14 -5 -6 0 -3Z" fill={GOLD} transform={`rotate(${r})`} />
         ))}
         {Array.from({ length: 8 }, (_, i) => i * 45 + 22.5).map((r) => (
-          <circle key={r} cy="-13" r="1.5" fill={BURGUNDY} transform={`rotate(${r})`} />
+          <circle key={r} cy="-13" r="1.5" fill={ROSEGOLD} transform={`rotate(${r})`} />
         ))}
-        <circle r="5" fill="#FDFBF7" stroke={GOLD} strokeWidth="1.2" />
-        <circle r="2.2" fill={BURGUNDY} />
+        <circle r="5" fill="var(--color-ivory)" stroke={GOLD} strokeWidth="1.2" />
+        <circle r="2.2" fill={ROSEGOLD} />
       </g>
     </svg>
   );
@@ -67,7 +68,7 @@ export function Rosette({ className = "", size = 44 }: { className?: string; siz
 
 /** Horizontal scroll flourish with a centre bloom. */
 export function Flourish({ className = "", light = false }: { className?: string; light?: boolean }) {
-  const c = light ? "#F0DC9C" : "#7A5A16";
+  const c = light ? "var(--color-gold-light)" : "var(--color-gold-deep)";
   const side = (
     <g fill="none" stroke={c} strokeWidth="2" strokeLinecap="round">
       <path d="M10 12 H58" />
@@ -77,8 +78,8 @@ export function Flourish({ className = "", light = false }: { className?: string
       <path d="M32 12 C36 18 42 18 44 14" />
       <circle cx="5" cy="12" r="2.2" fill={c} stroke="none" />
       <circle cx="22" cy="12" r="1.7" fill={c} stroke="none" />
-      <path d="M36 9 C38 6 41 6 42 8 C40 9 38 9 36 9Z" fill={SAGE} stroke="none" />
-      <path d="M36 15 C38 18 41 18 42 16 C40 15 38 15 36 15Z" fill={SAGE} stroke="none" />
+      <path d="M36 9 C38 6 41 6 42 8 C40 9 38 9 36 9Z" fill={LEAF} stroke="none" />
+      <path d="M36 15 C38 18 41 18 42 16 C40 15 38 15 36 15Z" fill={LEAF} stroke="none" />
     </g>
   );
   return (
@@ -112,13 +113,13 @@ export function Mihrab({ children, className = "" }: { children: React.ReactNode
         </defs>
         <path d={outer} fill="url(#mihrab-geo)" />
         <path d={outerLine} fill="none" stroke={GOLD} strokeWidth="2" vectorEffect="non-scaling-stroke" />
-        <path d={inner} fill="#FDFBF7" />
+        <path d={inner} fill="var(--color-ivory)" />
         <path d={innerLine} fill="none" stroke={GOLD} strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
         <path d={rule} fill="none" stroke={GOLD} strokeOpacity=".7" strokeWidth="1" vectorEffect="non-scaling-stroke" />
         {/* finial */}
         <g transform="translate(350 22)">
           <path d="M0 -20 C4 -14 4 -10 0 -6 C-4 -10 -4 -14 0 -20Z" fill={GOLD} />
-          <circle r="13" fill="#FDFBF7" stroke={GOLD} strokeWidth="1.5" />
+          <circle r="13" fill="var(--color-ivory)" stroke={GOLD} strokeWidth="1.5" />
           <Bloom r={0.95} />
         </g>
       </svg>
@@ -140,8 +141,8 @@ export function ArchPortrait({ photo, initial, alt }: { photo?: string; initial:
           // eslint-disable-next-line @next/next/no-img-element
           <img src={photo} alt={alt} className="size-full object-cover" />
         ) : (
-          <div className="sage-field flex size-full items-center justify-center">
-            <span className="flex size-28 items-center justify-center rounded-full border border-gold bg-ivory font-script text-6xl text-burgundy">
+          <div className="petal-field flex size-full items-center justify-center">
+            <span className="flex size-28 items-center justify-center rounded-full border border-gold bg-ivory font-script text-6xl text-rosegold">
               {initial}
             </span>
           </div>

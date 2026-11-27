@@ -151,7 +151,7 @@ export function ChatWidget({
           onClick={() => setOpen(true)}
           aria-label={title}
           title={title}
-          className="chat-pop fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex size-14 items-center justify-center rounded-full bg-burgundy text-ivory shadow-[0_8px_24px_-6px_rgba(74,15,34,0.55)] ring-2 ring-gold/70 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:bottom-6 sm:right-6"
+          className="chat-pop fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-4 z-50 flex size-14 items-center justify-center rounded-full bg-rosegold text-ivory shadow-[0_8px_24px_-6px_rgba(59,42,34,0.45)] ring-2 ring-gold/70 transition-transform hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold sm:bottom-6 sm:right-6"
         >
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
             <path d="M20.5 11.5a8 8 0 0 1-11.6 7.1L4 20l1.4-4.600A8 8 0 1 1 20.5 11.500Z" strokeLinejoin="round" />
@@ -172,11 +172,11 @@ export function ChatWidget({
             role="dialog"
             aria-modal="true"
             aria-label={title}
-            className={`chat-pop ${sans} fixed inset-x-0 bottom-0 z-50 flex h-[86dvh] flex-col overflow-hidden rounded-t-3xl bg-ivory shadow-[0_-12px_40px_-8px_rgba(0,0,0,0.35)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(32rem,calc(100dvh-3rem))] sm:w-[22rem] sm:rounded-2xl sm:shadow-[0_24px_60px_-12px_rgba(74,15,34,0.45)] sm:ring-1 sm:ring-gold/50`}
+            className={`chat-pop ${sans} fixed inset-x-0 bottom-0 z-50 flex h-[86dvh] flex-col overflow-hidden rounded-t-3xl bg-ivory shadow-[0_-12px_40px_-8px_rgba(0,0,0,0.35)] sm:inset-x-auto sm:bottom-6 sm:right-6 sm:h-[min(32rem,calc(100dvh-3rem))] sm:w-[22rem] sm:rounded-2xl sm:shadow-[0_24px_60px_-12px_rgba(59,42,34,0.40)] sm:ring-1 sm:ring-gold/50`}
           >
             {/* header */}
             <div className="flex shrink-0 items-center gap-3 border-b border-gold/30 px-4 py-3">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-burgundy text-gold-light">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-rosegold text-gold-light">
                 <Sparkle size={18} />
               </span>
               <div className="min-w-0 flex-1">
@@ -208,7 +208,7 @@ export function ChatWidget({
                       key={s}
                       type="button"
                       onClick={() => void send(s)}
-                      className="rounded-full border border-gold/70 bg-ivory px-3.5 py-1.5 text-[13.5px] font-medium text-burgundy transition-colors hover:bg-burgundy hover:text-ivory"
+                      className="rounded-full border border-gold/70 bg-ivory px-3.5 py-1.5 text-[13.5px] font-medium text-rosegold transition-colors hover:bg-rosegold hover:text-ivory"
                     >
                       {s}
                     </button>
@@ -220,7 +220,7 @@ export function ChatWidget({
                 m.role === "user" ? (
                   <div
                     key={i}
-                    className="ml-auto w-fit max-w-[88%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-burgundy px-3.5 py-2.5 text-[15px] leading-relaxed text-ivory"
+                    className="ml-auto w-fit max-w-[88%] whitespace-pre-wrap rounded-2xl rounded-br-md bg-rosegold px-3.5 py-2.5 text-[15px] leading-relaxed text-ivory"
                   >
                     {m.content}
                   </div>
@@ -251,7 +251,7 @@ export function ChatWidget({
               }}
               className="shrink-0 px-3 pb-[max(0.625rem,env(safe-area-inset-bottom))] pt-2"
             >
-              <div className="flex items-end gap-2 rounded-3xl border border-gold/50 bg-paper py-1.5 pl-4 pr-1.5 focus-within:border-burgundy">
+              <div className="flex items-end gap-2 rounded-3xl border border-gold/50 bg-paper py-1.5 pl-4 pr-1.5 focus-within:border-rosegold">
                 <textarea
                   ref={inputRef}
                   value={input}
@@ -273,7 +273,7 @@ export function ChatWidget({
                   type="submit"
                   disabled={busy || !input.trim()}
                   aria-label="Send"
-                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-burgundy text-ivory transition-opacity disabled:opacity-35"
+                  className="flex size-9 shrink-0 items-center justify-center rounded-full bg-rosegold text-ivory transition-opacity disabled:opacity-35"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M12 19V5M5 12l7-7 7 7" />

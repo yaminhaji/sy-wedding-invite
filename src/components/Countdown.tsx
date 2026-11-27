@@ -38,7 +38,7 @@ export function Countdown({ to, label }: { to: string; label?: string }) {
             key={k}
             className="flex w-16 flex-col items-center border border-gold/60 bg-ivory py-2.5 sm:w-20 sm:py-3"
           >
-            <span className="font-serif text-3xl font-semibold leading-none tabular-nums text-burgundy sm:text-4xl">
+            <span className="font-serif text-3xl font-semibold leading-none tabular-nums text-rosegold sm:text-4xl">
               {parts ? String(parts[k]).padStart(2, "0") : "--"}
             </span>
             <span className="caps mt-1.5 text-xs text-gold-deep">{k}</span>

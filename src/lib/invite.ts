@@ -1,8 +1,20 @@
 import { cacheLife, cacheTag } from "next/cache";
-import { defaultContent, firstName, type InviteContent, type InviteEvent } from "@/config/invite";
+import { defaultContent, defaultTheme, firstName, type InviteContent, type InviteEvent, type Theme } from "@/config/invite";
 import { readStoredContent } from "./store";
 
 export const INVITE_TAG = "invite";
+
+const HEX = /^#[0-9a-fA-F]{6}$/;
+
+/** Only #rrggbb values are accepted: these end up inside CSS and SVG, so anything else is dropped. */
+export function sanitizeTheme(t: Partial<Theme> | undefined): Theme {
+  const out = { ...defaultTheme };
+  for (const k of Object.keys(defaultTheme) as (keyof Theme)[]) {
+    const v = t?.[k];
+    if (typeof v === "string" && HEX.test(v.trim())) out[k] = v.trim().toLowerCase();
+  }
+  return out;
+}
 
 /** Saved content layered over the defaults, so newly added fields always have a value. */
 export function mergeContent(stored: Partial<InviteContent> | null): InviteContent {
@@ -17,6 +29,7 @@ export function mergeContent(stored: Partial<InviteContent> | null): InviteConte
     messages: { ...d.messages, ...stored.messages },
     saveTheDate: { ...d.saveTheDate, ...stored.saveTheDate },
     chat: { ...d.chat, ...stored.chat },
+    theme: sanitizeTheme(stored.theme),
     events: (stored.events?.length ? stored.events : d.events).map((e, i) => ({
       ...(d.events[i] ?? d.events[0]),
       ...e,

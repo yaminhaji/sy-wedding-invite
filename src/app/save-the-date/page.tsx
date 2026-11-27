@@ -26,7 +26,7 @@ export default async function SaveTheDatePage() {
   const closing = after ? saveTheDate.closing : saveTheDate.preClosing;
 
   return (
-    <section className="sage-field min-h-screen px-4 py-10 sm:py-14">
+    <section className="petal-field min-h-screen px-4 py-10 sm:py-14">
       <Mihrab className="rise mx-auto max-w-3xl">
         <div className="pb-14 pt-2 text-center sm:pb-20">
           <p
@@ -45,7 +45,7 @@ export default async function SaveTheDatePage() {
             <span className="block font-script text-6xl leading-[1.25] text-ink sm:text-8xl">
               {firstName(bride.name)}
             </span>
-            <span className="block font-script text-4xl leading-none text-burgundy sm:text-5xl">and</span>
+            <span className="block font-script text-4xl leading-none text-rosegold sm:text-5xl">and</span>
             <span className="block font-script text-6xl leading-[1.25] text-ink sm:text-8xl">
               {firstName(groom.name)}
             </span>
@@ -78,7 +78,7 @@ export default async function SaveTheDatePage() {
               <ul className="mt-4 space-y-3 font-serif text-xl leading-snug text-ink sm:text-2xl">
                 {saveTheDate.reasons.map((r) => (
                   <li key={r} className="flex items-baseline gap-3">
-                    <span aria-hidden="true" className="shrink-0 text-[0.65em] leading-none text-burgundy">◆</span>
+                    <span aria-hidden="true" className="shrink-0 text-[0.65em] leading-none text-rosegold">◆</span>
                     {r}
                   </li>
                 ))}
@@ -93,7 +93,7 @@ export default async function SaveTheDatePage() {
           </div>
 
           {/* save the date */}
-          <div className="burgundy-band mx-auto mt-12 max-w-xl px-6 py-12 sm:px-10">
+          <div className="rosegold-band mx-auto mt-12 max-w-xl px-6 py-12 sm:px-10">
             <Flourish light className="mx-auto w-48 sm:w-60" />
             <h2 className="gold-foil-light mt-3 font-script text-6xl leading-tight sm:text-7xl">
               {saveTheDate.title}
@@ -113,7 +113,7 @@ export default async function SaveTheDatePage() {
 
           <Medallion className="mx-auto mt-8" size={48} />
           <p className="mt-5 font-serif text-xl text-muted sm:text-2xl">With love,</p>
-          <p className="font-script text-5xl text-burgundy sm:text-6xl">{coupleTitle}</p>
+          <p className="font-script text-5xl text-rosegold sm:text-6xl">{coupleTitle}</p>
         </div>
       </Mihrab>
     </section>

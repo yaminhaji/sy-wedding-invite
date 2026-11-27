@@ -22,7 +22,7 @@ export function SiteHeader({ monogram }: { monogram: string }) {
     <>
     <header className="sticky top-0 z-40 border-b border-gold/25 bg-ivory/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:h-20 sm:px-6">
-        <Link href="/" className="caps flex items-center gap-2 text-lg text-burgundy sm:text-xl" onClick={() => setOpen(false)}>
+        <Link href="/" className="caps flex items-center gap-2 text-lg text-rosegold sm:text-xl" onClick={() => setOpen(false)}>
           {monogram}
         </Link>
 
@@ -78,7 +78,7 @@ export function SiteHeader({ monogram }: { monogram: string }) {
                     href={l.href}
                     onClick={() => setOpen(false)}
                     className={`block py-3 font-script text-5xl ${
-                      isActive(l.href) ? "text-burgundy" : "text-ink"
+                      isActive(l.href) ? "text-rosegold" : "text-ink"
                     }`}
                   >
                     {l.label}

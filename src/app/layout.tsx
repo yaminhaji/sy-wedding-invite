@@ -53,14 +53,26 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = {
-  themeColor: "#6e1a33",
-};
+export async function generateViewport(): Promise<Viewport> {
+  const { invite } = await getInvite();
+  return { themeColor: invite.theme.background };
+}
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const { invite } = await getInvite();
+  const t = invite.theme; // already validated as #rrggbb, so safe to put in a style attribute
+  const themeVars = {
+    "--theme-bg": t.background,
+    "--theme-blush": t.blush,
+    "--theme-gold": t.gold,
+    "--theme-text": t.text,
+    "--theme-highlight": t.highlight,
+  } as React.CSSProperties;
+
   return (
     <html
       lang="en"
+      style={themeVars}
       className={`${pinyon.variable} ${amiriQuran.variable} ${cormorant.variable} ${cinzel.variable} ${amiri.variable} ${scheherazade.variable} antialiased`}
     >
       <body className="flex min-h-screen flex-col">{children}</body>

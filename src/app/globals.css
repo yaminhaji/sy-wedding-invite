@@ -1,25 +1,35 @@
 @import "tailwindcss";
 
+/* The five editable theme colours (set in /admin; the root layout overrides these inline). */
+:root {
+  --theme-bg: #f6e9d3;
+  --theme-blush: #f1d9d1;
+  --theme-gold: #b08d4f;
+  --theme-text: #3b2a22;
+  --theme-highlight: #8f5a54;
+}
+
 @theme {
-  /* paper */
-  --color-ivory: #fdfbf7;
-  --color-paper: #f8f2ea;
-  --color-blush: #f6e8e8;
-  /* gold */
-  --color-gold: #c39a45;
-  --color-gold-deep: #6f5214;
-  --color-gold-light: #e6cd8a;
-  /* burgundy & English pastels */
-  --color-burgundy: #6e1a33;
-  --color-burgundy-deep: #4a0f22;
-  --color-rose: #d9a5b3;
-  --color-sage: #a3b59f;
-  --color-sage-light: #c9d5c4;
-  --color-sage-deep: #4f6a4a;
-  --color-powder: #dfe7f0;
-  /* text */
-  --color-ink: #2a2124;
-  --color-muted: #5f5258;
+  /* Background and secondary */
+  --color-champagne: var(--theme-bg);
+  --color-ivory: color-mix(in srgb, var(--theme-bg) 45%, white); /* cards, header, inputs */
+  --color-paper: color-mix(in srgb, var(--theme-bg) 88%, var(--theme-gold));
+  --color-blush: color-mix(in srgb, var(--theme-blush) 78%, white);
+  --color-petal: var(--theme-blush); /* page headers, section backdrops */
+  --color-petal-light: color-mix(in srgb, var(--theme-blush) 62%, white);
+  /* Accent (antique gold by default) */
+  --color-gold: var(--theme-gold);
+  --color-gold-deep: color-mix(in srgb, var(--theme-gold) 62%, black);
+  --color-gold-light: color-mix(in srgb, var(--theme-gold) 55%, #fff1c2);
+  --color-bronze: color-mix(in srgb, var(--theme-gold) 60%, black);
+  /* Highlight (muted rose gold by default) */
+  --color-rosegold: var(--theme-highlight);
+  --color-rosegold-deep: color-mix(in srgb, var(--theme-highlight) 72%, black);
+  --color-rosegold-soft: color-mix(in srgb, var(--theme-highlight) 65%, white);
+  --color-rose: color-mix(in srgb, var(--theme-highlight) 40%, white);
+  /* Text (warm espresso by default) */
+  --color-ink: var(--theme-text);
+  --color-muted: color-mix(in srgb, var(--theme-text) 78%, var(--theme-bg));
 
   --font-script: var(--font-script-face);
   --font-serif: var(--font-cormorant);
@@ -40,7 +50,7 @@ html {
 }
 
 body {
-  background-color: var(--color-ivory);
+  background-color: var(--color-champagne);
   color: var(--color-ink);
   font-family: var(--font-cormorant), Georgia, serif;
   font-weight: 500;
@@ -48,7 +58,7 @@ body {
 
 ::selection {
   background: var(--color-rose);
-  color: var(--color-burgundy-deep);
+  color: var(--color-rosegold-deep);
 }
 
 /* ---------- Gold foil (script headings only) ---------- */
@@ -61,10 +71,25 @@ body {
   animation: foil 9s ease-in-out infinite alternate;
 }
 .gold-foil {
-  background-image: linear-gradient(110deg, #8a6a22 0%, #c29a45 25%, #9c7a2c 45%, #d4b469 55%, #8a6a22 75%, #b38d3b 100%);
+  background-image: linear-gradient(
+    110deg,
+    var(--color-gold-deep) 0%,
+    var(--color-gold) 25%,
+    color-mix(in srgb, var(--color-gold) 60%, var(--color-gold-deep)) 45%,
+    color-mix(in srgb, var(--color-gold) 75%, white) 55%,
+    var(--color-gold-deep) 75%,
+    var(--color-gold) 100%
+  );
 }
 .gold-foil-light {
-  background-image: linear-gradient(110deg, #c9a24b 0%, #f3e2a9 30%, #d9bb6e 50%, #fbefc9 65%, #c9a24b 100%);
+  background-image: linear-gradient(
+    110deg,
+    var(--color-gold-light) 0%,
+    color-mix(in srgb, var(--color-gold-light) 55%, white) 30%,
+    var(--color-gold-light) 50%,
+    color-mix(in srgb, var(--color-gold-light) 35%, white) 65%,
+    var(--color-gold-light) 100%
+  );
 }
 @keyframes foil {
   from { background-position: 0% 50%; }
@@ -78,13 +103,13 @@ body {
   background-size: 96px 96px;
 }
 
-/* Sage ground with a faint white-line star lattice */
-.sage-field {
+/* Soft blush ground with a faint white-line star lattice */
+.petal-field {
   position: relative;
   isolation: isolate;
-  background-color: var(--color-sage);
+  background-color: var(--color-petal);
 }
-.sage-field::before {
+.petal-field::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -109,9 +134,9 @@ body {
   border-block: 2px solid var(--color-gold);
   /* a second gold rule just outside, like a framed band */
   box-shadow:
-    0 -4px 0 var(--color-ivory),
+    0 -4px 0 var(--color-champagne),
     0 -5.5px 0 var(--color-gold),
-    0 4px 0 var(--color-ivory),
+    0 4px 0 var(--color-champagne),
     0 5.5px 0 var(--color-gold);
   z-index: 1;
 }
@@ -209,17 +234,17 @@ body {
   .card {
     background: var(--color-ivory);
     border: 1px solid color-mix(in srgb, var(--color-gold) 55%, transparent);
-    box-shadow: 0 24px 50px -32px rgba(74, 15, 34, 0.35);
+    box-shadow: 0 24px 50px -32px rgba(59, 42, 34, 0.30);
   }
 }
 
-/* Deep burgundy band */
-.burgundy-band {
+/* Deep rosegold band */
+.rosegold-band {
   position: relative;
-  background-color: var(--color-burgundy);
+  background-color: var(--color-rosegold);
   color: var(--color-ivory);
 }
-.burgundy-band::before {
+.rosegold-band::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -229,7 +254,7 @@ body {
   opacity: 0.16;
   pointer-events: none;
 }
-.burgundy-band > * {
+.rosegold-band > * {
   position: relative;
 }
 
@@ -250,7 +275,7 @@ body {
     letter-spacing: 0.16em;
     font-size: 1.125rem;
     line-height: 1.5;
-    color: var(--color-burgundy);
+    color: var(--color-rosegold);
   }
   @media (min-width: 640px) {
     .eyebrow { font-size: 1.5rem; }
@@ -278,13 +303,13 @@ body {
   color: var(--color-ivory);
 }
 .gold-btn-solid {
-  background: var(--color-burgundy);
-  border-color: var(--color-burgundy);
+  background: var(--color-rosegold);
+  border-color: var(--color-rosegold);
   color: var(--color-ivory);
 }
 .gold-btn-solid:hover,
 .gold-btn-solid:focus-visible {
-  background: var(--color-burgundy-deep);
+  background: var(--color-rosegold-deep);
   border-color: var(--color-gold);
 }
 .gold-btn-light {
@@ -294,7 +319,7 @@ body {
 .gold-btn-light:hover,
 .gold-btn-light:focus-visible {
   background: var(--color-gold-light);
-  color: var(--color-burgundy-deep);
+  color: var(--color-rosegold-deep);
 }
 
 .field {
@@ -309,10 +334,10 @@ body {
   transition: border-color 0.2s;
 }
 .field:focus {
-  border-color: var(--color-burgundy);
+  border-color: var(--color-rosegold);
 }
 .field::placeholder {
-  color: #8f8186;
+  color: #9a8a7e;
 }
 
 /* ---------- Entrance animation ---------- */

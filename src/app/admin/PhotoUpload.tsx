@@ -81,7 +81,7 @@ function UploadButton({
       <button type="button" disabled={!!busy} onClick={() => input.current?.click()} className="gold-btn px-4 py-2 disabled:opacity-60">
         {busy ?? `+ ${children}`}
       </button>
-      {error && <p className="mt-2 font-serif text-lg text-burgundy">{error}</p>}
+      {error && <p className="mt-2 font-serif text-lg text-rosegold">{error}</p>}
     </div>
   );
 }
@@ -115,7 +115,7 @@ export function PhotoField({
             {value ? "Replace photo" : "Upload photo"}
           </UploadButton>
           {value && (
-            <button type="button" onClick={() => onChange("")} className="block font-serif text-lg text-burgundy underline">
+            <button type="button" onClick={() => onChange("")} className="block font-serif text-lg text-rosegold underline">
               Remove
             </button>
           )}
@@ -160,7 +160,7 @@ export function PhotoGrid({ items, onChange }: { items: string[]; onChange: (v: 
                   type="button"
                   aria-label="Remove photo"
                   onClick={() => onChange(items.filter((_, j) => j !== i))}
-                  className="border border-burgundy/40 px-2 font-serif text-lg text-burgundy hover:bg-burgundy hover:text-ivory"
+                  className="border border-rosegold/40 px-2 font-serif text-lg text-rosegold hover:bg-rosegold hover:text-ivory"
                 >
                   ✕
                 </button>

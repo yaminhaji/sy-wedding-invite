@@ -13,8 +13,8 @@ export default async function Home() {
 
   return (
     <>
-      {/* ---------- Hero: mihrab on sage ---------- */}
-      <section className="sage-field px-4 pt-10 sm:pt-14">
+      {/* ---------- Hero: mihrab on petal ---------- */}
+      <section className="petal-field px-4 pt-10 sm:pt-14">
         <Mihrab className="rise mx-auto max-w-3xl">
           <div className="pb-14 pt-2 text-center sm:pb-20">
             <p className="font-arabic text-[1.1rem] leading-[2] text-gold-deep min-[480px]:text-[1.5rem] sm:text-[2.5rem]" lang="ar" dir="rtl">
@@ -32,7 +32,7 @@ export default async function Home() {
               <span className="block font-script text-6xl leading-[1.25] text-ink sm:text-8xl">
                 {firstName(bride.name)}
               </span>
-              <span className="block font-script text-4xl leading-none text-burgundy sm:text-5xl">and</span>
+              <span className="block font-script text-4xl leading-none text-rosegold sm:text-5xl">and</span>
               <span className="block font-script text-6xl leading-[1.25] text-ink sm:text-8xl">
                 {firstName(groom.name)}
               </span>
@@ -65,7 +65,7 @@ export default async function Home() {
       <section className="bg-blush/60 px-6 py-20 text-center sm:py-28">
         <Rosette className="mx-auto" size={40} />
         <p
-          className="mx-auto mt-8 max-w-3xl text-balance font-quran text-3xl leading-[2.1] text-burgundy sm:text-4xl"
+          className="mx-auto mt-8 max-w-3xl text-balance font-quran text-3xl leading-[2.1] text-rosegold sm:text-4xl"
           lang="ar"
           dir="rtl"
         >
@@ -83,7 +83,7 @@ export default async function Home() {
       <section className="px-4 py-16 sm:py-24">
         <div className="mx-auto max-w-3xl border-2 border-gold bg-blush/60 px-6 py-10 text-center sm:px-14 sm:py-14">
           <p className="eyebrow text-lg sm:text-2xl">Please note</p>
-          <h2 className="mt-3 text-balance font-serif text-4xl font-bold leading-tight text-burgundy-deep sm:text-5xl">
+          <h2 className="mt-3 text-balance font-serif text-4xl font-bold leading-tight text-rosegold-deep sm:text-5xl">
             {invite.messages.intimateTitle}
           </h2>
           <div className="mx-auto my-6 h-0.5 w-24 bg-gold" />
@@ -95,11 +95,11 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ---------- Bride & Groom ---------- */}
-      <section className="px-6 py-20 sm:py-28">
+      {/* ---------- Bride & Groom: lighter cream band with gold rules so it stands apart ---------- */}
+      <section className="border-y border-gold/50 bg-ivory px-6 py-20 sm:py-28">
         <div className="text-center">
           <p className="eyebrow text-lg sm:text-2xl">The Couple</p>
-          <h2 className="mt-2 font-script text-[4.5rem] leading-tight text-burgundy-deep min-[480px]:text-8xl sm:text-9xl">Bride &amp; Groom</h2>
+          <h2 className="mt-2 font-script text-[4.5rem] leading-tight text-rosegold-deep min-[480px]:text-8xl sm:text-9xl">Bride &amp; Groom</h2>
           <Flourish className="mx-auto mt-3 w-48 sm:w-60" />
         </div>
 
@@ -147,14 +147,14 @@ export default async function Home() {
 
       {/* ---------- The day ---------- */}
       <div className="pattern-strip" />
-      <section className="sage-field px-4 py-20 sm:py-28">
+      <section className="petal-field px-4 py-20 sm:py-28">
         <div className="mx-auto max-w-5xl">
           <div className="text-center">
-            <p className="eyebrow text-burgundy-deep">Save the date</p>
+            <p className="eyebrow text-rosegold-deep">Save the date</p>
             <h2 className="mt-2 font-script text-6xl leading-tight text-ink sm:text-7xl">The Day</h2>
             <Flourish className="mx-auto mt-3 w-48 sm:w-60" />
           </div>
-          <div className="mt-12 shadow-[0_30px_60px_-30px_rgba(40,50,35,0.45)]">
+          <div className="mt-12 shadow-[0_30px_60px_-30px_rgba(59,42,34,0.35)]">
             <EventFeature event={main} timeZone={timeZone} coupleTitle={coupleTitle} compact />
           </div>
         </div>
@@ -173,14 +173,14 @@ export default async function Home() {
       {/* ---------- Note ---------- */}
       <section className="px-6 py-16 text-center sm:py-20">
         <Rosette className="mx-auto" size={40} />
-        <p className="mx-auto mt-6 max-w-2xl text-balance font-script text-5xl leading-snug text-burgundy sm:text-6xl">
+        <p className="mx-auto mt-6 max-w-2xl text-balance font-script text-5xl leading-snug text-rosegold sm:text-6xl">
           {invite.bringNote}
         </p>
       </section>
 
       {/* ---------- Closing band ---------- */}
       <div className="pattern-strip" />
-      <section className="burgundy-band px-6 py-20 text-center sm:py-28">
+      <section className="rosegold-band px-6 py-20 text-center sm:py-28">
         <Flourish light className="mx-auto w-48 sm:w-60" />
         <h2 className="gold-foil-light mt-4 font-script text-6xl leading-tight sm:text-7xl">We look forward to you</h2>
         <p className="mx-auto mt-4 max-w-lg text-balance font-serif text-xl text-ivory/90 sm:text-2xl">

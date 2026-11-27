@@ -17,7 +17,7 @@ export default async function FaqPage() {
         <div className="space-y-5">
           {invite.faqs.map((f) => (
             <article key={f.q} className="card border-l-4 border-l-gold px-6 py-6 sm:px-8 sm:py-7">
-              <h2 className="font-serif text-2xl font-bold leading-snug text-burgundy sm:text-[1.7rem]">{fill(f.q)}</h2>
+              <h2 className="font-serif text-2xl font-bold leading-snug text-rosegold sm:text-[1.7rem]">{fill(f.q)}</h2>
               <p className="mt-3 font-serif text-xl font-medium leading-relaxed text-ink sm:text-2xl">{fill(f.a)}</p>
             </article>
           ))}

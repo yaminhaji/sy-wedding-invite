@@ -10,8 +10,8 @@ export function PageHeader({
   subtitle?: string;
 }) {
   return (
-    <section className="sage-field px-6 pb-14 pt-16 text-center sm:pb-20 sm:pt-24">
-      {eyebrow && <p className="rise eyebrow text-burgundy-deep">{eyebrow}</p>}
+    <section className="petal-field px-6 pb-14 pt-16 text-center sm:pb-20 sm:pt-24">
+      {eyebrow && <p className="rise eyebrow text-rosegold-deep">{eyebrow}</p>}
       <h1
         className="rise mt-2 font-script text-6xl leading-tight text-ink sm:text-8xl"
         style={{ animationDelay: "100ms" }}

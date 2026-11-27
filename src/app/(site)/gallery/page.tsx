@@ -30,7 +30,7 @@ export default async function GalleryPage() {
           </div>
         ) : (
           <>
-            <p className="mb-10 text-center font-serif text-3xl font-semibold text-burgundy-deep sm:text-4xl">
+            <p className="mb-10 text-center font-serif text-3xl font-semibold text-rosegold-deep sm:text-4xl">
               Photos coming soon
             </p>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

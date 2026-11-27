@@ -1,13 +1,57 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
-import type { InviteContent } from "@/config/invite";
+import { useEffect, useState, useTransition } from "react";
+import { defaultTheme, themePresets, type InviteContent, type Theme } from "@/config/invite";
 import { MERGE_TAGS } from "@/lib/tags";
 import { logout, saveContent } from "./actions";
 import { PhotoField, PhotoGrid } from "./PhotoUpload";
 
 type Draft = InviteContent;
+
+/* ---------- colour helpers ---------- */
+
+const HEX = /^#[0-9a-fA-F]{6}$/;
+
+function mixHex(a: string, b: string, pctA: number) {
+  const p = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+  const [r1, g1, b1] = p(a);
+  const [r2, g2, b2] = p(b);
+  const f = (x: number, y: number) => Math.round(x * pctA + y * (1 - pctA)).toString(16).padStart(2, "0");
+  return `#${f(r1, r2)}${f(g1, g2)}${f(b1, b2)}`;
+}
+
+function luminance(hex: string) {
+  const c = [1, 3, 5].map((i) => {
+    const v = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+}
+
+function contrast(a: string, b: string) {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+const THEME_VARS: Record<keyof Theme, string> = {
+  background: "--theme-bg",
+  blush: "--theme-blush",
+  gold: "--theme-gold",
+  text: "--theme-text",
+  highlight: "--theme-highlight",
+};
+
+/** Readability checks for the chosen colours (same shades the site derives). */
+function themeChecks(t: Theme) {
+  const card = mixHex(t.background, "#ffffff", 0.45);
+  return [
+    { label: "Text on background", ratio: contrast(t.text, t.background), min: 4.5 },
+    { label: "Text on blush", ratio: contrast(t.text, t.blush), min: 4.5 },
+    { label: "Button text (on highlight)", ratio: contrast(card, t.highlight), min: 4.5 },
+    { label: "Gold labels on background", ratio: contrast(mixHex(t.gold, "#000000", 0.62), t.background), min: 4.5 },
+  ];
+}
 
 /* ---------- merge tag copy helpers ---------- */
 
@@ -57,7 +101,7 @@ function CopyTag({ tag, title, compact = false }: { tag: string; title?: string;
       }}
       className={`inline-flex items-center gap-1.5 border border-gold/60 bg-ivory font-mono text-gold-deep hover:bg-gold hover:text-ivory ${
         compact ? "px-1.5 py-0.5 text-xs" : "px-2.5 py-1 text-sm"
-      } ${done ? "!border-sage-deep !bg-sage-deep !text-ivory" : ""}`}
+      } ${done ? "!border-bronze !bg-bronze !text-ivory" : ""}`}
     >
       {!compact && <span>{done ? "Copied" : tag}</span>}
       <CopyIcon done={done} />
@@ -111,7 +155,7 @@ function Text({
         {tag && <CopyTag tag={tag} compact />}
       </span>
       <input
-        className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg text-ink outline-none focus:border-burgundy"
+        className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg text-ink outline-none focus:border-rosegold"
         type={type}
         value={value}
         placeholder={placeholder}
@@ -143,7 +187,7 @@ function Area({
         {tag && <CopyTag tag={tag} compact />}
       </span>
       <textarea
-        className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg leading-relaxed text-ink outline-none focus:border-burgundy"
+        className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg leading-relaxed text-ink outline-none focus:border-rosegold"
         rows={rows}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -173,14 +217,14 @@ function StringList({
           <div key={i} className="flex gap-2">
             {multiline ? (
               <textarea
-                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg leading-relaxed outline-none focus:border-burgundy"
+                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg leading-relaxed outline-none focus:border-rosegold"
                 rows={3}
                 value={item}
                 onChange={(e) => onChange(items.map((x, j) => (j === i ? e.target.value : x)))}
               />
             ) : (
               <input
-                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-burgundy"
+                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-rosegold"
                 value={item}
                 onChange={(e) => onChange(items.map((x, j) => (j === i ? e.target.value : x)))}
               />
@@ -208,7 +252,7 @@ function RemoveBtn({ onClick }: { onClick: () => void }) {
       type="button"
       onClick={onClick}
       aria-label="Remove"
-      className="shrink-0 self-start border border-burgundy/40 px-3 py-2 font-serif text-lg text-burgundy hover:bg-burgundy hover:text-ivory"
+      className="shrink-0 self-start border border-rosegold/40 px-3 py-2 font-serif text-lg text-rosegold hover:bg-rosegold hover:text-ivory"
     >
       ✕
     </button>
@@ -218,7 +262,7 @@ function RemoveBtn({ onClick }: { onClick: () => void }) {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="card px-5 py-8 sm:px-10">
-      <h2 className="font-script text-5xl text-burgundy">{title}</h2>
+      <h2 className="font-script text-5xl text-rosegold">{title}</h2>
       <div className="mt-6 space-y-5">{children}</div>
     </section>
   );
@@ -233,6 +277,21 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
   const [status, setStatus] = useState<{ kind: "ok" | "error"; text: string } | null>(null);
   const [pending, startTransition] = useTransition();
   const dirty = JSON.stringify(draft) !== JSON.stringify(saved);
+
+  // Live colour preview: apply the draft colours to the whole page as they are picked.
+  useEffect(() => {
+    const root = document.documentElement;
+    for (const k of Object.keys(THEME_VARS) as (keyof Theme)[]) {
+      const v = draft.theme[k];
+      if (HEX.test(v)) root.style.setProperty(THEME_VARS[k], v);
+    }
+  }, [draft.theme]);
+  useEffect(() => {
+    const root = document.documentElement;
+    return () => {
+      for (const k of Object.keys(THEME_VARS) as (keyof Theme)[]) root.style.removeProperty(THEME_VARS[k]);
+    };
+  }, []);
 
   const update = (fn: (d: Draft) => void) =>
     setDraft((prev) => {
@@ -261,11 +320,11 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
       <header className="sticky top-0 z-30 border-b border-gold/40 bg-ivory/95 backdrop-blur">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <div>
-            <p className="flex items-center gap-2 font-script text-4xl leading-none text-burgundy">
+            <p className="flex items-center gap-2 font-script text-4xl leading-none text-rosegold">
               Admin
               <span
                 className={`caps rounded-sm px-2 py-0.5 font-sans text-[0.7rem] font-bold tracking-[0.18em] ${
-                  saved.status === "draft" ? "bg-burgundy-deep text-gold-light" : "bg-sage text-sage-deep"
+                  saved.status === "draft" ? "bg-rosegold-deep text-gold-light" : "bg-petal text-bronze"
                 }`}
                 title="Status of the published site"
               >
@@ -315,8 +374,8 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
                   className={`border-2 px-4 py-4 text-left transition-colors ${
                     on
                       ? value === "draft"
-                        ? "border-burgundy-deep bg-burgundy-deep text-ivory"
-                        : "border-sage-deep bg-sage-deep text-ivory"
+                        ? "border-rosegold-deep bg-rosegold-deep text-ivory"
+                        : "border-bronze bg-bronze text-ivory"
                       : "border-gold/50 bg-ivory text-ink hover:border-gold"
                   }`}
                 >
@@ -328,10 +387,104 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
           </div>
         </Section>
 
+        <Section title="Colors">
+          <p className="font-serif text-lg text-muted">
+            Pick five colours and the whole site follows: every lighter and darker shade, the star pattern and the
+            ornaments are worked out from them. The page updates as you pick; press <strong>Save</strong> to publish.
+          </p>
+
+          <div>
+            <span className="caps text-sm text-gold-deep">Presets</span>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {themePresets.map((p) => {
+                const on = JSON.stringify(p.theme) === JSON.stringify(draft.theme);
+                return (
+                  <button
+                    key={p.name}
+                    type="button"
+                    onClick={() => update((d) => void (d.theme = { ...p.theme }))}
+                    className={`flex items-center gap-2 border px-3 py-2 font-serif text-lg ${
+                      on ? "border-rosegold bg-rosegold text-ivory" : "border-gold/60 bg-ivory text-ink hover:border-gold"
+                    }`}
+                  >
+                    <span className="flex">
+                      {Object.values(p.theme).map((c, i) => (
+                        <span key={i} className="-ml-1 size-4 rounded-full border border-black/20 first:ml-0" style={{ background: c }} />
+                      ))}
+                    </span>
+                    {p.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            {(
+              [
+                ["background", "Background", "The main page colour (champagne)"],
+                ["blush", "Secondary", "Soft panels, headers and the hero (soft blush)"],
+                ["gold", "Accent", "Lines, borders, ornaments and the star pattern (antique gold)"],
+                ["text", "Text", "Body text and names (warm espresso)"],
+                ["highlight", "Highlight", "Buttons, small headings and bands (muted rose gold)"],
+              ] as const
+            ).map(([key, label, hint]) => (
+              <div key={key}>
+                <span className="caps text-sm text-gold-deep">{label}</span>
+                <div className="mt-1 flex items-center gap-2">
+                  <input
+                    type="color"
+                    aria-label={`${label} colour`}
+                    value={HEX.test(draft.theme[key]) ? draft.theme[key] : defaultTheme[key]}
+                    onChange={(e) => update((d) => void (d.theme[key] = e.target.value))}
+                    className="h-11 w-14 shrink-0 cursor-pointer border border-gold/50 bg-ivory p-1"
+                  />
+                  <input
+                    aria-label={`${label} hex code`}
+                    value={draft.theme[key]}
+                    maxLength={7}
+                    spellCheck={false}
+                    onChange={(e) => {
+                      const v = e.target.value.startsWith("#") ? e.target.value : `#${e.target.value}`;
+                      update((d) => void (d.theme[key] = v));
+                    }}
+                    className={`w-full border bg-ivory px-3 py-2.5 font-mono text-lg uppercase text-ink outline-none focus:border-rosegold ${
+                      HEX.test(draft.theme[key]) ? "border-gold/50" : "border-rosegold"
+                    }`}
+                  />
+                </div>
+                <span className="mt-1 block font-serif text-base text-muted">{hint}</span>
+              </div>
+            ))}
+          </div>
+
+          {Object.values(draft.theme).every((c) => HEX.test(c)) ? (
+            <div className="border border-gold/40 bg-blush/50 px-4 py-3">
+              <p className="caps text-sm text-gold-deep">Readability</p>
+              <ul className="mt-2 grid gap-1 font-serif text-lg text-ink sm:grid-cols-2">
+                {themeChecks(draft.theme).map((c) => (
+                  <li key={c.label} className="flex items-center justify-between gap-3">
+                    <span>{c.label}</span>
+                    <span className={c.ratio >= c.min ? "font-semibold text-bronze" : "font-semibold text-rosegold"}>
+                      {c.ratio.toFixed(1)}:1 {c.ratio >= c.min ? "✓" : "⚠ hard to read"}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <p className="font-serif text-lg text-rosegold">Colours must look like #f6e9d3 (a # and six letters or digits).</p>
+          )}
+
+          <button type="button" className="gold-btn px-4 py-2" onClick={() => update((d) => void (d.theme = { ...defaultTheme }))}>
+            Reset to default colors
+          </button>
+        </Section>
+
         <Section title="The Couple">
           {(["bride", "groom"] as const).map((who) => (
             <div key={who} className="grid gap-4 border-t border-gold/30 pt-5 first:border-t-0 first:pt-0 sm:grid-cols-2">
-              <p className="eyebrow sm:col-span-2">{who === "bride" ? "Bride (always shown first)" : "Groom"}</p>
+              <p className="eyebrow sm:col-span-2">{who === "bride" ? "Bride" : "Groom"}</p>
               <Text label="Full name" value={draft[who].name} onChange={(v) => update((d) => void (d[who].name = v))} />
               <Text
                 label="Relation"
@@ -450,7 +603,7 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
           <label className="block">
             <span className="caps text-sm text-gold-deep">Which wording to show</span>
             <select
-              className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg text-ink outline-none focus:border-burgundy"
+              className="mt-1 w-full border border-gold/50 bg-ivory px-3 py-2.5 font-serif text-lg text-ink outline-none focus:border-rosegold"
               value={draft.saveTheDate.mode}
               onChange={(e) =>
                 update((d) => void (d.saveTheDate.mode = e.target.value as "auto" | "before" | "after"))
@@ -540,13 +693,13 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
               {draft.travel.arrive.map((a, i) => (
                 <div key={i} className="flex gap-2">
                   <input
-                    className="w-32 shrink-0 border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-burgundy"
+                    className="w-32 shrink-0 border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-rosegold"
                     value={a.label}
                     placeholder="By air"
                     onChange={(e) => update((d) => void (d.travel.arrive[i].label = e.target.value))}
                   />
                   <input
-                    className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-burgundy"
+                    className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-rosegold"
                     value={a.text}
                     onChange={(e) => update((d) => void (d.travel.arrive[i].text = e.target.value))}
                   />
@@ -578,13 +731,13 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
           {draft.contacts.map((c, i) => (
             <div key={i} className="flex gap-2">
               <input
-                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-burgundy"
+                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-rosegold"
                 value={c.name}
                 placeholder="Name"
                 onChange={(e) => update((d) => void (d.contacts[i].name = e.target.value))}
               />
               <input
-                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-burgundy"
+                className="w-full border border-gold/50 bg-ivory px-3 py-2 font-serif text-lg outline-none focus:border-rosegold"
                 value={c.phone}
                 placeholder="Phone"
                 onChange={(e) => update((d) => void (d.contacts[i].phone = e.target.value))}
@@ -604,7 +757,7 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
           <label className="flex cursor-pointer items-center gap-3 font-serif text-xl text-ink">
             <input
               type="checkbox"
-              className="size-5 accent-burgundy"
+              className="size-5 accent-rosegold"
               checked={draft.chat.enabled}
               onChange={(e) => update((d) => void (d.chat.enabled = e.target.checked))}
             />
@@ -644,7 +797,7 @@ export function AdminEditor({ initial, storage }: { initial: InviteContent; stor
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <p
             className={`font-serif text-lg ${
-              status?.kind === "error" ? "text-burgundy" : status ? "text-sage-deep" : "text-muted"
+              status?.kind === "error" ? "text-rosegold" : status ? "text-bronze" : "text-muted"
             }`}
             role="status"
           >
